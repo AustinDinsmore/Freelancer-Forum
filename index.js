@@ -6,7 +6,7 @@ const freelancers = [
 ];
 
 //creating secondary array
-const newfreelancer = [
+const newFreelancers = [
     { name: "Kathy", occupation: "Journalist", price: "$66"},
     { name: "Jesus", occupation: "Commedian", price: "$81"},
     { name: "Charles", occupation: "Song Writter", price: "$125"},
@@ -20,9 +20,7 @@ function init(){
     const forumTitle = document.createElement("h1");
     forumTitle.innerText = "Freelancer Forum";
     root.append(forumTitle);
-    const average = document.createElement("h2")
-    average.innerText = "Average Freelancer Price: "
-    root.append(average)
+
 //create table with freelancers
     const forumTable = document.createElement("table");
     const thead = document.createElement("thead");
@@ -65,21 +63,36 @@ function renderFreelancers(){
 
         return row;
     });
-    forumTable.replaceChildren(...forumElements)
+    forumTable.replaceChildren(...forumElements);
+      //get average price
+    const total = freelancers.reduce((acc, freelancer) => acc + parseInt(freelancer.price.slice(1)), 0);
+    
+    const average = total / freelancers.length;
+
+    //replace average price text
+    const p = document.querySelector(".p");
+    p.innerText = "";
+    p.innerText = "The average starting price is $" + Math.round(average) + ".";
 }
 
-//adding newfree into the table
-function addfreelancers(){
-    const newfree = newfreelancer[Math.floor(Math.random() * newfreelancer.length)];
-    // const newfreelancer = newfree.pop();
-  
+//adding newFreelancers into the table
+function addFreelancer () {
 
-    freelancers.push(newfree);
-  
-    renderFreelancers();
+        //stop when freelancers array has 10 freelancers
+        if (freelancers.length >= 10) {
+            return;
+        }
+
+        //get random freelancer from newFreelancers array
+        const newFreelancer =
+            newFreelancers[Math.floor(Math.random() * newFreelancers.length)];
+
+        //add newFreelancer to freelancers array
+        freelancers.push(newFreelancer);
+
+        //re-render the freelancers table in the body
+        renderFreelancers();
 }
-setInterval(addfreelancers, 3000);
 
-
-
+setInterval(addFreelancer, 1000);
 init();
